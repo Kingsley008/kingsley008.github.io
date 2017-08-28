@@ -46,7 +46,7 @@ function getDefaultModules() {
       },
       {
         test: /\.(png|jpg|gif|woff|woff2|ttf|svg|eot)$/,
-        loader: 'url-loader?limit=8192'
+          loader: 'url-loader?limit=8192&name=images/[hash:8].[name].[ext]'
       },
       {
         test: /\.(mp4|ogg|svg)$/,
