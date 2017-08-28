@@ -1,41 +1,99 @@
 /* Base Application Styles */
-html,body {
-  width: 100%;
-  height: 100%;
+html, body {
+    width: 100%;
+    height: 100%;
 
-  background: #222;
+    background: #222;
 }
-#content{
-  width: 100%;
-  height: 100%;
+
+#content {
+    width: 100%;
+    height: 100%;
 }
 
 /* stage -- start */
 .stage {
-  position: relative;
+    position: relative;
 
-  width:100%;
-  height:680px;
+    width: 100%;
+    height: 680px;
 }
+
 /* stage -- end */
 
 /*image -- start*/
-.img-sec{
-  position: relative;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  background-color: #dddddd;
+.img-sec {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: #dddddd;
+    // 定义3D视角
+    perspective: 1500px;
+    /*避免选择器层级更深 使用同级显示*/
+    @at-root {
+        .img-figure {
+            position: absolute;
+            width: 320px;
+            height: 360px;
+            margin: 0;
+            padding: 40px;
+            background-color: #fff;
+            box-sizing: border-box;
+            cursor: pointer;
+            // 以X轴 旋转
+            transform-origin: 0 50% 0;
+            transform-style: preserve-3d;
+            //定义top left 动画属性
+            transition: transform .6s ease-in-out, left .6s ease-in-out, top .6s ease-in-out;
+            &.is-inverse{
+                transform: translate(320px) rotateY(180deg);
+            }
+        }
+
+        figcaption {
+            text-align: center;
+            .img-title {
+                margin: 20px 0 0 0;
+                color: #a7a0a2;
+                font-size: 16px;
+            }
+        }
+        .img-back {
+            position: absolute;
+            top:0;
+            left: 0;
+            width:100%;
+            height: 100%;
+            padding: 50px 40px;
+            overflow: auto;
+
+            color:#a7a0a2;
+            font-size: 22px;
+            line-height: 1.25;
+            text-align: center;
+            background-color: #fff;
+
+            box-sizing: border-box;
+
+            /*先开始时.img-back，旋转了180度，因为translateZ(1px)，位于正面图像的下方*/
+            /*当.img-figure旋转时，.img-back又旋转了180度，旋转度数为360,因为translateZ(1px)，位于正面图像的上方*/
+            transform: rotateY(180deg) translateZ(1px);
+        }
+    }
+
 }
+
 /*image -- end*/
 
 /*controller -- start*/
 .controller-nav {
-  position: absolute;
-  width: 100%;
-  left: 0;
-  border-bottom: 30px;
-  z-index:101;
-  text-align: center;
+    position: absolute;
+    width: 100%;
+    left: 0;
+    border-bottom: 30px;
+    z-index: 101;
+    text-align: center;
 }
+
 /*controller -- end*/
