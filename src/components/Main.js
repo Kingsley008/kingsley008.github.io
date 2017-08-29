@@ -283,9 +283,9 @@ class AppComponent extends React.Component {
         });
     }
 
-    /*
+    /**
      * 翻转图片 通过闭包来记录当前是 哪一张图片被翻转
-     */
+     **/
 
     inverse(index) {
 
@@ -300,6 +300,9 @@ class AppComponent extends React.Component {
         }.bind(this)
     }
 
+    /**
+     * 清空所有的状态 然后居中一张图片
+     * */
     center(index) {
 
         return function () {
