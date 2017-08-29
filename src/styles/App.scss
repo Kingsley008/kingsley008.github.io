@@ -75,13 +75,12 @@ html, body {
             height: 100%;
             padding: 50px 40px;
             overflow: auto;
-
             color:#a7a0a2;
-            font-size: 22px;
+            font-size: 14px;
             line-height: 1.25;
-            text-align: center;
+            text-align: left;
             background-color: #fff;
-
+            text-indent: 2em;
             box-sizing: border-box;
 
             /*先开始时.img-back，旋转了180度，因为translateZ(1px)，位于正面图像的下方*/
