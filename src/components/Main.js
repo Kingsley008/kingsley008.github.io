@@ -1,113 +1,12 @@
 require('normalize.css/normalize.css');
 require('styles/App.scss');
-
-
-// 封装一个随机取值的函数
-function getRangeRandom(low, high) {
-    var result = Math.random() * (high - low) + low;
-    return Math.floor(result);
-}
-
+var utils = require('../components/utils.js');
 import React from 'react';
 import ReactDOM from 'react-dom';
-
-
 // 控制按钮
-class ControllerUnit extends React.Component {
-    constructor(props) {
-        super(props);
-        this.handleClick = this.handleClick.bind(this);
-    }
-
-    handleClick(e) {
-        e.stopPropagation();
-        e.preventDefault();
-        if (this.props.arrange.isCenter) {
-            this.props.inverse();
-        } else {
-            this.props.center();
-        }
-    }
-
-    render() {
-        var self = this;
-        var styleName = 'controller-unit';
-
-        if (self.props.arrange.isCenter) {
-            styleName += ' selected';
-        }
-
-        if (self.props.arrange.inverse) {
-            styleName += ' inversed';
-        }
-
-        return (
-            <span className={styleName} onClick={this.handleClick}> </span>
-        )
-    }
-}
-
-// 表示 单个图片
-class ImgFigure extends React.Component {
-    constructor(props) {
-        super(props);
-        this.handleClick = this.handleClick.bind(this);
-        this.handleMouseOver = this.handleMouseOver.bind(this);
-    }
-
-    handleClick(e) {
-        e.stopPropagation();
-        //e.preventDefault();
-        if (this.props.arrange.isCenter) {
-            this.props.inverse();
-        } else {
-            this.props.center();
-        }
-    }
-
-    handleMouseOver(e) {
-        e.stopPropagation();
-        e.preventDefault();
-        this.props.clear();
-    }
-
-    render() {
-        var self = this;
-        var styleObj = {};
-        // 如果props属性中定义了这张图片的位置 则使用
-        if (self.props.arrange.pos) {
-            styleObj = self.props.arrange.pos;
-        }
-        //如果图片的旋转角度不为0 ，添加旋转角度
-        if (self.props.arrange.rotate) {
-            // 添加厂商前缀
-            (['MozTransform', 'WebkitTransform', 'MsTransform', 'transform']).forEach((value) => {
-                styleObj[value] = 'rotate(' + this.props.arrange.rotate + 'deg)'
-            })
-        }
-        // 通过类名 来控制 图片的正反
-        var imgFigureClassName = 'img-figure';
-        if (self.props.arrange.inverse) {
-            imgFigureClassName += ' is-inverse'
-        }
-        if (self.props.arrange.isCenter) {
-            styleObj.zIndex = 11;
-        }
-        return (
-            <figure className={imgFigureClassName} style={styleObj} onClick={this.handleClick}
-                   onMouseOver={this.handleMouseOver} >
-                <img src={this.props.data.imageURL}
-                     alt={this.props.data.title}/>
-                <figcaption>
-                    <h2 className="img-title">{this.props.data.title}</h2>
-                    <div className="img-back" onClick={this.handleClick}>
-                        <div dangerouslySetInnerHTML={{__html:this.props.data.desc}}/>
-                    </div>
-                </figcaption>
-            </figure>
-        )
-    }
-}
+import ControllerUnit from '../components/ControllerUnit.js';
+// 表示单个展示物
+import SingleFigure from '../components/SingleFigure.js';
 
 // 照片展示区
 class AppComponent extends React.Component {
@@ -129,7 +28,7 @@ class AppComponent extends React.Component {
             },
             vPosRange: {
                 x: [0, 0],
-                topSecY: [0, 0],
+                topSecY: [0, 0]
             }
         }
         // 保存图片状态
@@ -167,21 +66,33 @@ class AppComponent extends React.Component {
         function load() {
             var imgObj = new Image();
 
-            imgObj.addEventListener('load',function (e) {
+            imgObj.addEventListener('load',function () {
                 //改变加载进度
                 option.each(count, len);
 
                 if(count === len){
                     // 完成加载
-                   option.modal.style.display = 'none';
-                   console.log( option.modal.style.display);
+                    option.modal.style.display = 'none';
                 } else {
                     load();
                 }
                 count++
             });
+
+            imgObj.addEventListener('error',function () {
+                //改变加载进度
+                option.each(count, len);
+
+                if(count === len){
+                    // 完成加载
+                    option.modal.style.display = 'none';
+                } else {
+                    load();
+                }
+                count++
+            });
+
             imgObj.src = imgs[count];
-            console.log(count);
         }
 
 
@@ -209,8 +120,7 @@ class AppComponent extends React.Component {
         this.initImages({
             modal:modal,
             each:function (count,len) {
-                modal.innerText = "图片加载中...请稍等..."+ Math.round(count/len * 100)  +"%";
-                console.log(modal.innerText);
+                modal.innerText = '欢迎来到我的项目展示画廊 图片加载中...请稍等...'+ Math.round(count/len * 100)  + '%';
             }
         });
         // import ReactDOM 后 得到refs DOM节点
@@ -233,7 +143,7 @@ class AppComponent extends React.Component {
         // 计算中心图片的位置点
         this.Constant.centerPos = {
             left: halfStageW - halfImgW,
-            top: halfStageH - halfImgH,
+            top: halfStageH - halfImgH
         }
         // 左侧区域 -- left 取值
         this.Constant.hPosRange.leftSecX[0] = -halfImgW;
@@ -258,10 +168,9 @@ class AppComponent extends React.Component {
        // self.autoPlay();
     }
 
-    /*
+    /**
      * 重新布局所有图片
      */
-
     rearrangeImages(centerIndex) {
         this.CenterNum = centerIndex;
         var imgsArrangeArr = this.state.imgArrangeArr,
@@ -284,7 +193,7 @@ class AppComponent extends React.Component {
         imgsArrangeCenterArr[0] = {
             pos: centerPos,
             rotate: 0,
-            isCenter: true,
+            isCenter: true
         }
         // 布局上册的图片信息 随机
         topImgSpliceIndex = Math.floor(Math.random() * (imgsArrangeArr.length - topImgNum));
@@ -293,10 +202,10 @@ class AppComponent extends React.Component {
         //布局位于上侧的图片
         imgsArrangeTopArr.forEach(function (value, index) {
             imgsArrangeTopArr[index].pos = {
-                top: getRangeRandom(vPosRangeTopY[0], vPosRangeTopY[1]),
-                left: getRangeRandom(vPosRangeX[0], vPosRangeX[1])
+                top: utils.getRangeRandom(vPosRangeTopY[0], vPosRangeTopY[1]),
+                left: utils. getRangeRandom(vPosRangeX[0], vPosRangeX[1])
             }
-            imgsArrangeTopArr[index].rotate = getRangeRandom(-30, 30);
+            imgsArrangeTopArr[index].rotate = utils. getRangeRandom(-30, 30);
             imgsArrangeTopArr[index].isCenter = false;
         });
         // 布局左右两侧的图片
@@ -313,11 +222,11 @@ class AppComponent extends React.Component {
                 hPosRangeLORX = hPosRangeRightSecX;
             }
             imgsArrangeArr[i].pos = {
-                top: getRangeRandom(hPosRangeY[0], hPosRangeY[1]),
-                left: getRangeRandom(hPosRangeLORX[0], hPosRangeLORX[1]),
-                isCenter: false,
+                top: utils.getRangeRandom(hPosRangeY[0], hPosRangeY[1]),
+                left: utils. getRangeRandom(hPosRangeLORX[0], hPosRangeLORX[1]),
+                isCenter: false
             }
-            imgsArrangeArr[i].rotate = getRangeRandom(30, -30);
+            imgsArrangeArr[i].rotate = utils. getRangeRandom(30, -30);
 
         }
         // 将摆放出去的 图片 放回 arr
@@ -366,22 +275,20 @@ class AppComponent extends React.Component {
         }.bind(this)
     }
 
-    // 自动播放逻辑
+    // 显示下一张
     next() {
         var self = this;
         self.CenterNum++;
         self.CenterNum = self.CenterNum % 10;
         self.center(self.CenterNum)();
     }
-
+    //自动播放
     autoPlay() {
         var self = this;
         self.intervalHandler = setInterval(
                 self.next.bind(self)
             , 2000)
     }
-
-
     // 清楚 定时器
     clear() {
         return function () {
@@ -408,14 +315,14 @@ class AppComponent extends React.Component {
                     },
                     rotate: 0,
                     inverse: false,
-                    isCenter: false,
+                    isCenter: false
                 }
             }
             // 保存组件
-            imgFigures.push(<ImgFigure key={index} data={value} ref={'imgFigure' + index}
-                                       arrange={self.state.imgArrangeArr[index]}
-                                       inverse={self.inverse(index)} center={self.center(index)}
-                                       clear = {self.clear()}
+            imgFigures.push(<SingleFigure key={index} data={value} ref={'imgFigure' + index}
+                                          arrange={self.state.imgArrangeArr[index]}
+                                          inverse={self.inverse(index)} center={self.center(index)}
+                                          clear = {self.clear()}
             />)
 
             controllerUnits.push(<ControllerUnit key={index} ref={'controllerUnit' + index}
@@ -436,16 +343,6 @@ class AppComponent extends React.Component {
         );
     }
 }
-
-/*class Loader extends React.Component {
-    render(){
-        return(
-            <div className = "modal">
-                <AppComponent/>
-            </div>
-        )
-    }
-}*/
 
 AppComponent.defaultProps = {};
 
