@@ -1,18 +1,18 @@
 [
   {
-    "fileName":"1.jpg",
-    "title":"网易云热评《化》",
-    "desc":"我不怕你一杯热水烫死我，也不怕你一杯冰水冻死我，我最怕你一杯温水耗尽了我。"
+    "fileName":"wy.jpg",
+    "title":"个人简介",
+    "desc":"姓名：王勇\n 大学：浙江工商大学\n 专业：电子商务\n 求职方向：前端工程师 \n 我的： <a href='https://github.com/Kingsley008' target='_blank'>github</a>"
   },
   {
-    "fileName":"2.jpg",
-    "title":"网易云热评《wish you well》",
-    "desc":"有爱人的时候，背井离乡当作旅行。爱人离开后，走两步都是漂泊。"
+    "fileName":"class.jpg",
+    "title":"网易教育主产品页设计稿实现",
+    "desc":"使用原生javascirpt编写\n实现了网站主页常用的组件：\n轮播投图，tab页切换，遮罩等\n 预览地址：<a href='https://kingsley008.github.io/front-end-final/' target='_blank' >github page</a>"
   },
   {
-    "fileName":"3.jpg",
-    "title":"网易云热评《爱的太迟》",
-    "desc":"20岁那年买得起10岁那年买不起的玩具，可却没了当初那般期待感；30那年有勇气去追20岁那年不敢追的女孩，可女孩早已为人妇多年；40岁那年想再去珍惜30岁那年该珍惜的朋友，可却已经疏远多年…人生就是这样，错过了就再也回不来了。有些事，现在不做，以后再也不会做了"
+    "fileName":"biyao.jpg",
+    "title":"必要+网易严选主页混合实现",
+    "desc":"使用JQ编写\n实现了评论展示、新品展示、侧边栏导航、顶部固定导航等功能\n 预览地址：<a href='https://kingsley008.github.io/biyao-web/index.html#top' target='_blank' >github page</a>"
   },
   {
     "fileName":"4.jpg",

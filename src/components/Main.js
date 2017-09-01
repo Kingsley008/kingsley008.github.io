@@ -1,19 +1,6 @@
 require('normalize.css/normalize.css');
 require('styles/App.scss');
-var imgeData = require('../data/imgesdata.json');
-// OK ! console.log(imgeData); json loader 正常使用
 
-// 使用自执行函数 得到图片路径
-imgeData = (function getImagsUrl(imgeData) {
-    for (var i = 0; i < imgeData.length; i++) {
-        var singleImg = {};
-        singleImg.imageURL = require('../images/' + imgeData[i].fileName);
-        singleImg.title = imgeData[i].title;
-        singleImg.desc = imgeData[i].desc;
-        imgeData[i] = singleImg;
-    }
-    return imgeData;
-})(imgeData)
 
 // 封装一个随机取值的函数
 function getRangeRandom(low, high) {
@@ -24,7 +11,8 @@ function getRangeRandom(low, high) {
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-// 表 控制按钮
+
+// 控制按钮
 class ControllerUnit extends React.Component {
     constructor(props) {
         super(props);
@@ -69,7 +57,7 @@ class ImgFigure extends React.Component {
 
     handleClick(e) {
         e.stopPropagation();
-        e.preventDefault();
+        //e.preventDefault();
         if (this.props.arrange.isCenter) {
             this.props.inverse();
         } else {
@@ -81,7 +69,6 @@ class ImgFigure extends React.Component {
         e.stopPropagation();
         e.preventDefault();
         this.props.clear();
-        console.log('in');
     }
 
     render() {
@@ -114,7 +101,7 @@ class ImgFigure extends React.Component {
                 <figcaption>
                     <h2 className="img-title">{this.props.data.title}</h2>
                     <div className="img-back" onClick={this.handleClick}>
-                        <p>{this.props.data.desc}</p>
+                        <div dangerouslySetInnerHTML={{__html:this.props.data.desc}}/>
                     </div>
                 </figcaption>
             </figure>
@@ -127,6 +114,7 @@ class AppComponent extends React.Component {
 
     constructor(props) {
         super(props)
+        //初始化图片
         // 存放分区位置
         this.Constant = {
             centerPos: {
@@ -162,9 +150,69 @@ class AppComponent extends React.Component {
         }
 
     }
+    // 初始化图片资源
+    initImages(option){
 
+        var imgs = [];
+        // 得到URL数组
+        this.imgeData.forEach(function (v) {
+            imgs.push(v.imageURL);
+        });
+        // 得到图片数量
+        var len = imgs.length;
+        var count = 0;
+
+
+        load();
+        function load() {
+            var imgObj = new Image();
+
+            imgObj.addEventListener('load',function (e) {
+                //改变加载进度
+                option.each(count, len);
+
+                if(count === len){
+                    // 完成加载
+                   option.modal.style.display = 'none';
+                   console.log( option.modal.style.display);
+                } else {
+                    load();
+                }
+                count++
+            });
+            imgObj.src = imgs[count];
+            console.log(count);
+        }
+
+
+    }
+    // 初始化 json 信息
+    componentWillMount(){
+        this.imgeData = require('../data/imgesdata.json');
+        // OK ! console.log(imgeData); json loader 正常使用
+
+        // 使用自执行函数 得到图片路径
+        this.imgeData = (function getImagsUrl(imgeData) {
+            for (var i = 0; i < imgeData.length; i++) {
+                var singleImg = {};
+                singleImg.imageURL = require('../images/' + imgeData[i].fileName);
+                singleImg.title = imgeData[i].title;
+                singleImg.desc = imgeData[i].desc.replace(/\n/g,'<br />');
+                imgeData[i] = singleImg;
+            }
+            return imgeData;
+        })(this.imgeData)
+    }
     // 组件加载进来后 开始加载图片位置 计算分区
     componentDidMount() {
+        var modal = ReactDOM.findDOMNode(this.refs.modal);
+        this.initImages({
+            modal:modal,
+            each:function (count,len) {
+                modal.innerText = "图片加载中...请稍等..."+ Math.round(count/len * 100)  +"%";
+                console.log(modal.innerText);
+            }
+        });
         // import ReactDOM 后 得到refs DOM节点
         var stageDom = ReactDOM.findDOMNode(this.refs.stage),
             //scrollWidth：对象的实际内容的宽度，不包边线宽度，会随对象中内容超过可视区后而变大。
@@ -203,11 +251,11 @@ class AppComponent extends React.Component {
 
         this.Constant.vPosRange.topSecY[0] = -halfImgH;
         this.Constant.vPosRange.topSecY[1] = halfStageH - 3 * halfImgH;
-        var firstCenterNum = Math.floor(Math.random() * 10);
+        var firstCenterNum = 0;
         var self = this;
         self.rearrangeImages(firstCenterNum);
         self.CenterNum = firstCenterNum;
-        self.autoPlay();
+       // self.autoPlay();
     }
 
     /*
@@ -343,12 +391,13 @@ class AppComponent extends React.Component {
     }
 
     render() {
+
         var self = this;
         // 存放子组件： 控制按钮
         var controllerUnits = [];
         // 存放子组件： 图片数据
         var imgFigures = [];
-        imgeData.forEach(function (value, index) {
+        self.imgeData.forEach(function (value, index) {
             // 判断是否已经设置了pos
             if (!self.state.imgArrangeArr[index]) {
                 // 如果没有设置 初始化为 0
@@ -376,6 +425,7 @@ class AppComponent extends React.Component {
         });
         return (
             <section className="stage" ref='stage'>
+                <div className="modal" ref="modal"> </div>
                 <section className="img-sec">
                     {imgFigures} {/*自动调用数组中所有的子组件*/}
                 </section>
@@ -386,6 +436,16 @@ class AppComponent extends React.Component {
         );
     }
 }
+
+/*class Loader extends React.Component {
+    render(){
+        return(
+            <div className = "modal">
+                <AppComponent/>
+            </div>
+        )
+    }
+}*/
 
 AppComponent.defaultProps = {};
 
