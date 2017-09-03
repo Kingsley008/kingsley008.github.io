@@ -27,6 +27,66 @@
     
 **React实战：知识点总结**
 --
+
+* React组件生命周期使用
+    ```jsx harmony
+          // 在构造函数 声明内置的变量和状态
+          constructor(props) {
+                  super(props)
+                  //初始化图片
+                  // 存放分区位置
+                  this.Constant = {
+                      centerPos: {
+                          left: 0,
+                          top: 0
+                      },
+                      //水平方向是取值范围
+                      hPosRange: {
+                          leftSecX: [0, 0],
+                          rightSecX: [0, 0],
+                          y: [0, 0]
+                      },
+                      vPosRange: {
+                          x: [0, 0],
+                          topSecY: [0, 0]
+                      }
+                  }
+                  // 保存图片状态
+                  this.state = {
+                      imgArrangeArr: [
+                      ]
+                  }
+                }
+  
+        // 在组件将要插入dom节点之前 初始化需要的data
+        componentWillMount(){
+              this.imgeData = require('../data/imgesdata.json');
+              // OK ! console.log(imgeData); json loader 正常使用
+      
+              // 使用自执行函数 得到图片路径
+              this.imgeData = (function getImagsUrl(imgeData) {
+                  for (var i = 0; i < imgeData.length; i++) {
+                      var singleImg = {};
+                      singleImg.imageURL = require('../images/' + imgeData[i].fileName);
+                      singleImg.title = imgeData[i].title;
+                      singleImg.desc = imgeData[i].desc.replace(/\n/g,'<br />');
+                      imgeData[i] = singleImg;
+                  }
+                  return imgeData;
+              })(this.imgeData)
+          }
+        
+        // 组件加载进来后 开始加载图片 计算展示的分区
+            componentDidMount() {
+                var modal = ReactDOM.findDOMNode(this.refs.modal);
+                this.initImages({
+                    modal:modal,
+                    each:function (count,len) {
+                        modal.innerText = '欢迎来到我的项目展示画廊 图片加载中...请稍等...'+ Math.round(count/len * 100)  + '%';
+                    }
+                });
+              }
+    ```
 * 组件化UI开发思维
   
     * 在react中，使用import 关键字引入需要使用的相关组件
@@ -121,4 +181,15 @@
                     font-family: iconfont;
                     color:#fff;
                 }
-```
+    ```
+* scrollHeight, clientHight, offsetHeight 的区别
+
+    * scrollHeight: ENTIRE  content & padding (visible or not)
+      Height of all content + paddings, despite of height of the element.
+      
+    * clientHeight: VISIBLE content & padding
+      Only visible height: content portion limited by explicitly defined height of the element.
+      
+    * offsetHeight: VISIBLE content & padding + border + scrollbar
+
+
