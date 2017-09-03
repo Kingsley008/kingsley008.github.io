@@ -1,4 +1,5 @@
 import React from 'react';
+
 export default class SingleFigure extends React.Component {
     constructor(props) {
         super(props);
@@ -46,13 +47,13 @@ export default class SingleFigure extends React.Component {
         }
         return (
             <figure className={imgFigureClassName} style={styleObj} onClick={this.handleClick}
-                    onMouseOver={this.handleMouseOver} >
+                    onMouseOver={this.handleMouseOver}>
                 <img src={this.props.data.imageURL}
                      alt={this.props.data.title}/>
                 <figcaption>
                     <h2 className="img-title">{this.props.data.title}</h2>
                     <div className="img-back" onClick={this.handleClick}>
-                        <div dangerouslySetInnerHTML={{__html:this.props.data.desc}}/>
+                        <div dangerouslySetInnerHTML={{__html: this.props.data.desc}}/>
                     </div>
                 </figcaption>
             </figure>

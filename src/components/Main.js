@@ -49,8 +49,9 @@ class AppComponent extends React.Component {
         }
 
     }
+
     // 初始化图片资源
-    initImages(option){
+    initImages(option) {
 
         var imgs = [];
         // 得到URL数组
@@ -63,14 +64,15 @@ class AppComponent extends React.Component {
 
 
         load();
+
         function load() {
             var imgObj = new Image();
 
-            imgObj.addEventListener('load',function () {
+            imgObj.addEventListener('load', function () {
                 //改变加载进度
                 option.each(count, len);
 
-                if(count === len){
+                if (count === len) {
                     // 完成加载
                     option.modal.style.display = 'none';
                 } else {
@@ -79,11 +81,11 @@ class AppComponent extends React.Component {
                 count++
             });
 
-            imgObj.addEventListener('error',function () {
+            imgObj.addEventListener('error', function () {
                 //改变加载进度
                 option.each(count, len);
 
-                if(count === len){
+                if (count === len) {
                     // 完成加载
                     option.modal.style.display = 'none';
                 } else {
@@ -97,8 +99,9 @@ class AppComponent extends React.Component {
 
 
     }
+
     // 初始化 json 信息
-    componentWillMount(){
+    componentWillMount() {
         this.imgeData = require('../data/imgesdata.json');
         // OK ! console.log(imgeData); json loader 正常使用
 
@@ -108,19 +111,20 @@ class AppComponent extends React.Component {
                 var singleImg = {};
                 singleImg.imageURL = require('../images/' + imgeData[i].fileName);
                 singleImg.title = imgeData[i].title;
-                singleImg.desc = imgeData[i].desc.replace(/\n/g,'<br />');
+                singleImg.desc = imgeData[i].desc.replace(/\n/g, '<br />');
                 imgeData[i] = singleImg;
             }
             return imgeData;
         })(this.imgeData)
     }
+
     // 组件加载进来后 开始加载图片位置 计算分区
     componentDidMount() {
         var modal = ReactDOM.findDOMNode(this.refs.modal);
         this.initImages({
-            modal:modal,
-            each:function (count,len) {
-                modal.innerText = '欢迎来到我的项目展示画廊 图片加载中...请稍等...'+ Math.round(count/len * 100)  + '%';
+            modal: modal,
+            each: function (count, len) {
+                modal.innerText = '欢迎来到我的项目展示画廊 图片加载中...请稍等...' + Math.round(count / len * 100) + '%';
             }
         });
         // import ReactDOM 后 得到refs DOM节点
@@ -165,7 +169,7 @@ class AppComponent extends React.Component {
         var self = this;
         self.rearrangeImages(firstCenterNum);
         self.CenterNum = firstCenterNum;
-       // self.autoPlay();
+        // self.autoPlay();
     }
 
     /**
@@ -203,9 +207,9 @@ class AppComponent extends React.Component {
         imgsArrangeTopArr.forEach(function (value, index) {
             imgsArrangeTopArr[index].pos = {
                 top: utils.getRangeRandom(vPosRangeTopY[0], vPosRangeTopY[1]),
-                left: utils. getRangeRandom(vPosRangeX[0], vPosRangeX[1])
+                left: utils.getRangeRandom(vPosRangeX[0], vPosRangeX[1])
             }
-            imgsArrangeTopArr[index].rotate = utils. getRangeRandom(-30, 30);
+            imgsArrangeTopArr[index].rotate = utils.getRangeRandom(-30, 30);
             imgsArrangeTopArr[index].isCenter = false;
         });
         // 布局左右两侧的图片
@@ -223,10 +227,10 @@ class AppComponent extends React.Component {
             }
             imgsArrangeArr[i].pos = {
                 top: utils.getRangeRandom(hPosRangeY[0], hPosRangeY[1]),
-                left: utils. getRangeRandom(hPosRangeLORX[0], hPosRangeLORX[1]),
+                left: utils.getRangeRandom(hPosRangeLORX[0], hPosRangeLORX[1]),
                 isCenter: false
             }
-            imgsArrangeArr[i].rotate = utils. getRangeRandom(30, -30);
+            imgsArrangeArr[i].rotate = utils.getRangeRandom(30, -30);
 
         }
         // 将摆放出去的 图片 放回 arr
@@ -282,13 +286,15 @@ class AppComponent extends React.Component {
         self.CenterNum = self.CenterNum % 10;
         self.center(self.CenterNum)();
     }
+
     //自动播放
     autoPlay() {
         var self = this;
         self.intervalHandler = setInterval(
-                self.next.bind(self)
+            self.next.bind(self)
             , 2000)
     }
+
     // 清楚 定时器
     clear() {
         return function () {
@@ -322,17 +328,17 @@ class AppComponent extends React.Component {
             imgFigures.push(<SingleFigure key={index} data={value} ref={'imgFigure' + index}
                                           arrange={self.state.imgArrangeArr[index]}
                                           inverse={self.inverse(index)} center={self.center(index)}
-                                          clear = {self.clear()}
+                                          clear={self.clear()}
             />)
 
             controllerUnits.push(<ControllerUnit key={index} ref={'controllerUnit' + index}
                                                  arrange={self.state.imgArrangeArr[index]}
                                                  inverse={self.inverse(index)} center={self.center(index)}
-                                                 intervalHandler={self.intervalHandler} />)
+                                                 intervalHandler={self.intervalHandler}/>)
         });
         return (
             <section className="stage" ref='stage'>
-                <div className="modal" ref="modal"> </div>
+                <div className="modal" ref="modal"></div>
                 <section className="img-sec">
                     {imgFigures} {/*自动调用数组中所有的子组件*/}
                 </section>
