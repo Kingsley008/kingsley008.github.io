@@ -20,9 +20,9 @@
     "desc":"使用canvas功能，原生js编写\n可以手动调节fps,弹球的位置 \n运用了部分es6的功能，来重构代码\n 预览地址：<a href='https://kingsley008.github.io/CollideBlocks/' target='_blank' >github page</a> "
   },
   {
-    "fileName":"5.jpg",
-    "title":"出自网易云音乐《Hanging On》热评",
-    "desc":"有一天我问一个小男孩爱是什么？小男孩回答爱是狗狗会舔你的手。我听了之后笑了。他接着说：就算你已经不要它了。"
+    "fileName":"fly.png",
+    "title":"打飞机游戏",
+    "desc":"使用canvas功能，原生js编写\n 增加配置功能调整游戏各项参数\n简单模拟Particle System 实现爆炸的效果 "
   },
   {
     "fileName":"6.jpg",
