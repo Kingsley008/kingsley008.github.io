@@ -20,7 +20,7 @@
     "desc":"使用canvas功能，原生js编写\n可以手动调节fps,弹球的位置 \n运用了部分es6的功能，来重构代码\n 预览地址：<a href='https://kingsley008.github.io/CollideBlocks/' target='_blank' >github page</a> "
   },
   {
-    "fileName":"fly.png",
+    "fileName":"game2.png",
     "title":"打飞机游戏",
     "desc":"使用canvas功能，原生js编写\n 增加配置功能调整游戏各项参数\n简单模拟Particle System 实现爆炸的效果\n 预览地址：<a href='https://kingsley008.github.io/game-plane/' target='_blank' >github page</a> "
   },
