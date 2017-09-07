@@ -25,9 +25,9 @@
     "desc":"使用canvas功能，原生js编写\n 增加配置功能调整游戏各项参数\n简单模拟Particle System 实现爆炸的效果\n 预览地址：<a href='https://kingsley008.github.io/game-plane/' target='_blank' >github page</a> "
   },
   {
-    "fileName":"6.jpg",
-    "title":"网易云热评《词不达意》",
-    "desc":"“两个人交流时，其实是六个人在交流：你以为的你，你以为的他，真正的你；他以为的他，他以为的你，真正的他。”"
+    "fileName":"game3.png",
+    "title":"Flappy Bird",
+    "desc":"使用webpack进行项目依赖的构建\n 增加自动化游戏参数绑定 \n 对动画功能进行了抽象 \n 预览地址：<a href='https://kingsley008.github.io/UsingWebapck/' target='_blank' >github page</a>"
   },
   {
     "fileName":"7.jpg",
