@@ -109,7 +109,7 @@ class AppComponent extends React.Component {
         this.imgeData = (function getImagsUrl(imgeData) {
             for (var i = 0; i < imgeData.length; i++) {
                 var singleImg = {};
-                singleImg.imageURL = require('../images/' + imgeData[i].fileName);
+                singleImg.imageURL = require('./images/' + imgeData[i].fileName);
                 singleImg.title = imgeData[i].title;
                 singleImg.desc = imgeData[i].desc.replace(/\n/g, '<br />');
                 imgeData[i] = singleImg;
